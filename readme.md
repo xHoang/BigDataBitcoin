@@ -1,87 +1,59 @@
-# Project Title
+# Bitcoin analysis using big data jobs
 
-One Paragraph of project description goes here
+Used Big Data Processing techniques - using Hadoop & Spark - to analyse a subset of the Bitcoin Blockchain (2009-
+2014). Analysis includes finding top ten donors to the WikiLeaks Bitcoin wallet, and tracing coins that were
+laundered in Ransomware attacks (up to 2nd generation ofwallets).
 
-## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+## Assignments
 
-### Prerequisites
+The assignment is split into three parts: A,B and C:
 
-What things you need to install the software and how to install them
 
-```
-Give examples
-```
+* Part A. Time Analysis (30%)
 
-### Installing
+Part A wants us to aggregate every transaction in each month and then graph in a bar chart. In order
+to achieve this, I have written code using the MRJob library as seen here:
 
-A step by step series of examples that tell you how to get a development env running
+![PartA](https://i.imgur.com/aq9abZK.png)
 
-Say what the step will be
+In order to complete this task, we need to understand that in the ‘transactions.csv’ file provided it
+contains data which has five fields. In these fields, the third field contains the POSIX timestamp
+which is the number of seconds since 1/1/1970.
 
-```
-Give the example
-```
+To then convert this timestamp into a data without a year we use the datetime module where we
+use the method fromtimestamp to convert the number of seconds into our local time (GMT).
+However, the data returned is more than we need so we need to format it as we only want the year
+and the month. So in order to do that we use strftime("%Y-%m") which basically formats the
+output to only show the Year and month separated by a “-“.
 
-And repeat
+We then yield the converted date and sent it to the reducer and combiner where they will total up
+all the values where the job will then give out a file with the results. The results in my case split up
+into parts and then merged back together. The data is found in outputRealMerge.txt
 
-```
-until finished
-```
+### Graph of Blockchain subset
+In the given data we have an anomaly which shows the date 1970-01 and yields a value of one. This value is not technically an anomaly because it’s
+referencing the genesis block in the blockchain, but it shows up as 1970-01 because the value from the field was 0. The dates were also not sorted so I have
+sorted them using excel.
+I have omitted this value from the graph:
 
-End with an example of getting some data out of the system or using it for a little demo
+![PartB](https://i.imgur.com/7Us5MOy.png)
 
-## Running the tests
+From the graph shown above, the overall trend shown is that around 2012-06 transaction blocks
+added on to the blockchain generally increase until 2012-12 where the transactions fall dramatically.
+This maybe due to Bitcoin’s drop-in value from $819.43 per Bitcoin in February and then $379.37
+later. However, more likely is that this is just an anomaly because it is rising in popularity despite its
+downfall
 
-Explain how to run the automated tests for this system
+* Part B. Top Ten Donors (40%)
 
-### Break down into end to end tests
 
-Explain what these tests test and why
+* Part C Data Exploration (30%)
 
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+We have
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Hadoop (Python / Java) - MRJob
+* Spark (Python / Java)
+*
